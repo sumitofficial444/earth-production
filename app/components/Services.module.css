@@ -1,0 +1,121 @@
+.services {
+  position: relative;
+}
+
+.services::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(212, 163, 74, 0.3), transparent);
+}
+
+.header {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-bottom: 60px;
+}
+
+.title {
+  margin-bottom: 16px;
+}
+
+.subtitle {
+  text-align: center;
+  margin: 0 auto;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 24px;
+}
+
+.card {
+  padding: 32px;
+  position: relative;
+  overflow: hidden;
+  cursor: default;
+}
+
+.cardGlow {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background: linear-gradient(90deg, transparent, rgba(212, 163, 74, 0.6), transparent);
+  transform: scaleX(0);
+  transition: transform 0.4s ease;
+}
+
+.card:hover .cardGlow {
+  transform: scaleX(1);
+}
+
+.iconWrap {
+  font-size: 36px;
+  margin-bottom: 20px;
+  display: inline-block;
+  padding: 14px;
+  background: rgba(212, 163, 74, 0.08);
+  border-radius: 16px;
+  border: 1px solid rgba(212, 163, 74, 0.15);
+  line-height: 1;
+  transition: all 0.3s ease;
+}
+
+.card:hover .iconWrap {
+  background: rgba(212, 163, 74, 0.15);
+  transform: scale(1.05);
+}
+
+.cardTitle {
+  font-family: 'Outfit', sans-serif;
+  font-size: 20px;
+  font-weight: 700;
+  color: #f0f0f0;
+  margin-bottom: 12px;
+}
+
+.cardDesc {
+  font-size: 14px;
+  color: #777;
+  line-height: 1.7;
+  margin-bottom: 20px;
+}
+
+.tagRow {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.tag {
+  padding: 4px 12px;
+  border-radius: 100px;
+  font-size: 12px;
+  font-weight: 500;
+  color: #d4a34a;
+  background: rgba(212, 163, 74, 0.08);
+  border: 1px solid rgba(212, 163, 74, 0.2);
+}
+
+@media (max-width: 1024px) {
+  .grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 640px) {
+  .grid {
+    grid-template-columns: 1fr;
+    gap: 16px;
+  }
+  .card {
+    padding: 24px;
+  }
+}
