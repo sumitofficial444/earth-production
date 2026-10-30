@@ -4,18 +4,218 @@ import { useEffect } from 'react';
 export default function EarthPage() {
 
   useEffect(() => {
-    const contactBtn = document.getElementById('contactBtn');
+    // ── Popup ──────────────────────────────────────────────
+    const contactBtn  = document.getElementById('contactBtn');
     const popupOverlay = document.getElementById('popupOverlay');
-    const closePopup = document.getElementById('closePopup');
     if (contactBtn && popupOverlay) {
       contactBtn.addEventListener('click', () => popupOverlay.classList.add('show'));
-    }
-    if (closePopup && popupOverlay) {
-      closePopup.addEventListener('click', () => popupOverlay.classList.remove('show'));
     }
     window.addEventListener('click', (e) => {
       if (popupOverlay && e.target === popupOverlay) popupOverlay.classList.remove('show');
     });
+
+    // ── Wait for GSAP + ScrollSmoother then init ───────────
+    let attempts = 0;
+    const maxAttempts = 60; // wait up to 6 seconds
+
+    const initGSAP = () => {
+      const gsap = window.gsap;
+      const ScrollTrigger = window.ScrollTrigger;
+      const ScrollSmoother = window.ScrollSmoother;
+
+      if (!gsap || !ScrollTrigger || !ScrollSmoother) {
+        attempts++;
+        if (attempts < maxAttempts) {
+          setTimeout(initGSAP, 100);
+        }
+        return;
+      }
+
+      // Register plugins
+      gsap.registerPlugin(ScrollTrigger, ScrollSmoother);
+
+      // ── Horizontal scroll (caseVarticleScroll) ────────────
+      const varticleEl = document.querySelector('.carticle-slide-active');
+      if (varticleEl) {
+        // Kill any existing ScrollSmoother instance first
+        const existing = ScrollSmoother.get();
+        if (existing) existing.kill();
+
+        // Re-create ScrollSmoother on smooth-wrapper/content
+        const smoother = ScrollSmoother.create({
+          wrapper: '#smooth-wrapper',
+          content: '#smooth-content',
+          smooth: 1.5,
+          effects: true,
+        });
+
+        const wrapper = document.querySelector('.scroller-wrapper');
+        const scroller = wrapper ? wrapper.querySelector('.scroller') : null;
+
+        if (wrapper && scroller) {
+          const timelines = [];
+
+          const getToValue = () =>
+            scroller.scrollWidth - wrapper.getBoundingClientRect().width;
+
+          const mm = gsap.matchMedia();
+
+          mm.add('(min-width: 641px)', () => {
+            // pre-pin
+            const beforeST = gsap.fromTo(
+              scroller,
+              {
+                x: () => {
+                  const dist = scroller.getBoundingClientRect().top + window.scrollY;
+                  return dist * 0.5;
+                },
+                opacity: 0.2,
+              },
+              {
+                x: () => 0,
+                opacity: 1,
+                ease: 'none',
+                immediateRender: true,
+                scrollTrigger: {
+                  trigger: scroller,
+                  start: -10,
+                  end: '50% 46.99%',
+                  invalidateOnRefresh: true,
+                  scrub: true,
+                },
+              }
+            );
+            timelines.push(beforeST);
+
+            // pinned horizontal scroll
+            const mainST = gsap.fromTo(
+              scroller,
+              { x: () => 0 },
+              {
+                x: () => -getToValue(),
+                immediateRender: false,
+                ease: 'none',
+                scrollTrigger: {
+                  trigger: scroller,
+                  start: '50% 47%',
+                  end: () =>
+                    '+=' +
+                    Math.min(
+                      getToValue(),
+                      Math.max(window.innerHeight, window.innerWidth) + 200
+                    ),
+                  pin: true,
+                  invalidateOnRefresh: true,
+                  scrub: true,
+                },
+              }
+            );
+            timelines.push(mainST);
+
+            // post-pin fade out
+            const afterST = gsap.fromTo(
+              scroller,
+              { x: () => -getToValue(), opacity: 1 },
+              {
+                x: () => -getToValue() - window.innerWidth * 0.5,
+                opacity: 0,
+                ease: 'none',
+                scrollTrigger: {
+                  trigger: scroller,
+                  start: () => mainST.scrollTrigger.end,
+                  end: () => '+=' + window.innerHeight * 0.75,
+                  invalidateOnRefresh: true,
+                  scrub: true,
+                },
+              }
+            );
+            timelines.push(afterST);
+
+            return () => {
+              timelines.forEach((tl) => tl.kill());
+              timelines.length = 0;
+              gsap.set([scroller, wrapper], { clearProps: 'all' });
+            };
+          });
+        }
+      }
+
+      // ── Scrolling text marquee ────────────────────────────
+      const scrollingTextOne = document.querySelector('.scrollingText');
+      if (scrollingTextOne) {
+        gsap.registerPlugin(ScrollTrigger);
+        const tl2 = gsap.timeline();
+        tl2.to('.scrollingText', { x: -1000, duration: 50, repeat: -1, ease: 'linear' });
+        const tl = gsap.timeline();
+        tl.to('.scrollingText', {
+          xPercent: -5,
+          scrollTrigger: { trigger: '.scrollingText', scrub: 1 },
+        });
+      }
+
+      const scrollingTextTwo = document.querySelector('.scrollingText-two');
+      if (scrollingTextTwo) {
+        const tl2 = gsap.timeline();
+        tl2.to('.scrollingText-two', { x: 1000, duration: 50, repeat: -1, ease: 'linear' });
+        const tl = gsap.timeline();
+        tl.to('.scrollingText-two', {
+          xPercent: 5,
+          scrollTrigger: { trigger: '.scrollingText-two', scrub: 1 },
+        });
+      }
+
+      // ── Grow (scale) animation ────────────────────────────
+      if (document.querySelector('.grow')) {
+        const growTl = gsap.timeline({
+          scrollTrigger: {
+            trigger: '.grow',
+            scrub: 1,
+            start: 'top center',
+            end: '+=1000',
+            ease: 'power1.out',
+          },
+        });
+        growTl.to('.grow', { duration: 1, scale: 1 });
+      }
+
+      // ── Rolling text nav effect ───────────────────────────
+      document.querySelectorAll('.rolling-text').forEach((element) => {
+        const innerText = element.innerText;
+        element.innerHTML = '';
+        const textContainer = document.createElement('div');
+        textContainer.classList.add('block');
+        for (const letter of innerText) {
+          const span = document.createElement('span');
+          span.innerText = letter.trim() === '' ? '\xa0' : letter;
+          span.classList.add('letter');
+          textContainer.appendChild(span);
+        }
+        element.appendChild(textContainer);
+        element.appendChild(textContainer.cloneNode(true));
+      });
+
+      // ── Counter up ────────────────────────────────────────
+      if (window.$ && window.$.fn && window.$.fn.counterUp) {
+        window.$('.counter').counterUp({ delay: 10, time: 1000 });
+      }
+
+      // ── Back to top scroll progress ───────────────────────
+      if (window.$ && window.$.fn) {
+        // handled by original main.js backToTopInit
+      }
+    };
+
+    // Start polling
+    setTimeout(initGSAP, 300);
+
+    // Cleanup on unmount
+    return () => {
+      if (window.gsap && window.ScrollTrigger) {
+        window.ScrollTrigger.getAll().forEach((t) => t.kill());
+        const sm = window.ScrollSmoother && window.ScrollSmoother.get();
+        if (sm) sm.kill();
+      }
+    };
   }, []);
 
   return (
