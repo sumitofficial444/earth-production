@@ -58,10 +58,10 @@ export default function Hero() {
 
           {/* CTA Buttons */}
           <div className={styles.ctaRow}>
-            <a href="#contact" className="btn-primary" onClick={(e)=>{e.preventDefault();document.querySelector('#contact').scrollIntoView({behavior:'smooth'})}}>
+            <a href="#contact" className="btn-primary" onClick={(e) => { e.preventDefault(); document.querySelector('#contact').scrollIntoView({ behavior: 'smooth' }) }}>
               🎙️ Book a Session
             </a>
-            <a href="#services" className="btn-outline" onClick={(e)=>{e.preventDefault();document.querySelector('#services').scrollIntoView({behavior:'smooth'})}}>
+            <a href="#services" className="btn-outline" onClick={(e) => { e.preventDefault(); document.querySelector('#services').scrollIntoView({ behavior: 'smooth' }) }}>
               Explore Services
             </a>
           </div>
@@ -80,7 +80,7 @@ export default function Hero() {
             <div className={styles.studioCardGlow} />
             <div className={styles.logoWrap}>
               <Image
-                src="/logo.jpg"
+                src="/logo.webp"
                 alt="The Earth Production Logo"
                 width={180}
                 height={180}

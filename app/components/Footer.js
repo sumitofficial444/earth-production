@@ -17,7 +17,7 @@ export default function Footer() {
           {/* Brand */}
           <div className={styles.brand}>
             <div className={styles.logoRow}>
-              <Image src="/logo.jpg" alt="The Earth Production" width={56} height={56} className={styles.logoImg} />
+              <Image src="/logo.webp" alt="The Earth Production" width={56} height={56} className={styles.logoImg} />
               <div>
                 <p className={styles.logoMain}>The Earth Production</p>
                 <p className={styles.logoSub}>Rental Podcast & Video Studio</p>

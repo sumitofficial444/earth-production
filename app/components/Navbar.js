@@ -36,7 +36,7 @@ export default function Navbar() {
           className={styles.logo}
           onClick={(e) => { e.preventDefault(); handleNavClick('#home'); }}
         >
-          <Image src="/logo.jpg" alt="The Earth Production Logo" width={60} height={60} className={styles.logoImg} />
+          <Image src="/logo.webp" alt="The Earth Production Logo" width={60} height={60} className={styles.logoImg} />
           <div className={styles.logoText}>
             <span className={styles.logoMain}>The Earth</span>
             <span className={styles.logoSub}>Production</span>

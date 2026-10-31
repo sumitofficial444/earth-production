@@ -14,7 +14,7 @@ export default function RootLayout({ children }) {
         <meta charSet="UTF-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
         <meta name="theme-style-mode" content="1" />
-        <link rel="shortcut icon" type="image/jpeg" href="/logo.jpg" />
+        <link rel="shortcut icon" type="image/jpeg" href="/logo.webp" />
         {/* Original Template CSS */}
         <link rel="stylesheet" href="/assets/css/plugins/fontawesome-6.css" />
         <link rel="stylesheet" href="/assets/css/plugins/swiper.min.css" />

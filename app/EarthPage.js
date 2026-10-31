@@ -5,7 +5,7 @@ export default function EarthPage() {
 
   useEffect(() => {
     // ── Popup ──────────────────────────────────────────────
-    const contactBtn  = document.getElementById('contactBtn');
+    const contactBtn = document.getElementById('contactBtn');
     const popupOverlay = document.getElementById('popupOverlay');
     if (contactBtn && popupOverlay) {
       contactBtn.addEventListener('click', () => popupOverlay.classList.add('show'));
@@ -260,6 +260,15 @@ export default function EarthPage() {
         .popup-overlay{position:fixed;top:0;left:0;width:100%;height:100%;background-color:rgba(0,0,0,.7);display:flex;justify-content:center;align-items:center;z-index:9999;opacity:0;visibility:hidden;transition:opacity .3s ease,visibility .3s ease;}
         .popup-overlay.show{opacity:1;visibility:visible;}
         @keyframes fadeIn{from{transform:scale(.95);opacity:0;}to{transform:scale(1);opacity:1;}}
+        .footer-top-one{display:flex;flex-direction:row;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:20px;padding-bottom:40px;border-bottom:1px solid rgba(255,255,255,0.1);margin-bottom:40px;}
+        .footer-top-one .logo-area{flex-shrink:0;}
+        .footer-top-one .footer-nav ul{display:flex;flex-direction:row;list-style:none;gap:24px;margin:0;padding:0;}
+        .footer-top-one .footer-nav ul li a{color:#ccc;text-decoration:none;font-size:14px;transition:color .3s;}
+        .footer-top-one .footer-nav ul li a:hover{color:#fff;}
+        .footer-top-one .social-area ul{display:flex;flex-direction:row;list-style:none;gap:16px;margin:0;padding:0;}
+        .footer-top-one .social-area ul li a{color:#ccc;font-size:16px;transition:color .3s;}
+        .footer-top-one .social-area ul li a:hover{color:#fff;}
+        @media(max-width:768px){.footer-top-one{flex-direction:column;align-items:flex-start;}.footer-top-one .footer-nav ul{flex-wrap:wrap;gap:16px;}.footer-top-one .social-area ul{gap:12px;}}
       `}</style>
 
       {/* POPUP */}
@@ -270,7 +279,7 @@ export default function EarthPage() {
         <div className="header-container-one">
           <div className="header-wrapper">
             <a href="/" className="logo" style={{ width: '200px' }}>
-              <img src="/logo.jpg" alt="The Earth Production" style={{ borderRadius: '8px', background: 'white', padding: '4px', height: '60px', width: 'auto', objectFit: 'contain' }} />
+              <img src="/logo.webp" alt="The Earth Production" style={{ height: '60px', width: 'auto', objectFit: 'contain' }} />
             </a>
             <div className="header-right">
               <nav className="nav-area drop-down-rts">
@@ -610,7 +619,7 @@ export default function EarthPage() {
                 <div className="col-lg-12">
                   <div className="footer-top-one">
                     <div className="logo-area">
-                      <a href="/"><img src="/logo.jpg" alt="The Earth Production" style={{ borderRadius: '10px', background: 'white', padding: '6px', height: '70px', width: 'auto' }} /></a>
+                      <a href="/"><img src="/logo.webp" alt="The Earth Production" style={{ height: '70px', width: 'auto' }} /></a>
                     </div>
                     <div className="footer-nav">
                       <ul>
